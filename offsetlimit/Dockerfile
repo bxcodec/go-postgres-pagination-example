@@ -5,22 +5,22 @@ RUN apt --yes --force-yes update && apt --yes --force-yes upgrade && \
     apt --yes --force-yes install git \
     make openssh-client
 
-WORKDIR /go_modules/auto-increment-id
+WORKDIR /go_modules/offset-limit
 
 COPY . .
-RUN make auto-increment
+RUN make offset-limit
 
 ## Distribution
 FROM debian:stretch-slim
 
 RUN apt update && apt upgrade -y && \
     apt install -y ca-certificates tzdata && \
-    mkdir /app && mkdir auto-increment-id
+    mkdir /app && mkdir offset-limit
 
-WORKDIR /auto-increment-id
+WORKDIR /offset-limit
 
 EXPOSE 9090
 
-COPY --from=builder /go_modules/auto-increment-id/aiengine /app
+COPY --from=builder /go_modules/offset-limit/olengine /app
 
-CMD /app/aiengine
+CMD /app/olengine
