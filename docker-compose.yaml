@@ -45,3 +45,42 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  offset-limit:
+    build:
+      context: .
+      dockerfile: ./offsetlimit/Dockerfile
+    container_name: payment-with-offset-limit
+    ports:
+      - 9092:9090
+    environment: 
+      POSTGRES_HOST: postgres-offset-limit
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: payment
+      DB_MAX_CONN_LIFE_TIME_S: 300
+      DB_MAX_OPEN_CONNECTION: 100
+      DB_MAX_IDLE_CONNECTION: 10
+    networks: 
+      - backend
+    depends_on:
+      postgres-offset-limit:
+        condition: service_healthy
+
+  postgres-offset-limit:
+    build:
+      context: ./offsetlimit
+      dockerfile: db.Dockerfile
+    container_name: payment-with-offset-limit-db
+    environment:
+      POSTGRES_DB: payment
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d payment"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
