@@ -8,8 +8,7 @@ RUN apt --yes --force-yes update && apt --yes --force-yes upgrade && \
 WORKDIR /go_modules/auto-increment-id
 
 COPY . .
-COPY ../ ../
-RUN make engine
+RUN make auto-increment
 
 ## Distribution
 FROM debian:stretch-slim
@@ -22,6 +21,6 @@ WORKDIR /auto-increment-id
 
 EXPOSE 9090
 
-COPY --from=builder /go_modules/auto-increment-id/engine /app
+COPY --from=builder /go_modules/auto-increment-id/aiengine /app
 
-CMD /app/engine
+CMD /app/aiengine
