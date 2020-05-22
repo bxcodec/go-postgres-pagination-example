@@ -1,0 +1,27 @@
+# Reason why stick to V2 not V3
+# https://github.com/peter-evans/docker-compose-healthcheck/issues/3#issuecomment-329037485
+# This is only for local development. Production, we will use K8s or EBS. We won't use Docker Compose/ Swarm
+version: "2.3"
+networks:
+  backend:
+    driver: bridge
+
+services:
+  postgres-offset-limit-test:
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    container_name: payment-offset-limit-db-test
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_DB: payment
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d payment"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
