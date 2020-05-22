@@ -39,10 +39,10 @@ func BenchmarkFetchQuery(b *testing.B) {
 	// 100K/10 = 10K
 	b.N = 10000
 	for i := 0; i < b.N; i++ {
-		res, nextCusor, err := FetchPayment(context.Background(), db, params)
+		res, nextOffset, err := FetchPayment(context.Background(), db, params)
 		require.NoError(b, err)
-		if nextCusor != 0 {
-			params.OffSet = uint64(nextCusor)
+		if nextOffset != 0 {
+			params.OffSet = uint64(nextOffset)
 		}
 		assert.NotZero(b, len(res))
 	}

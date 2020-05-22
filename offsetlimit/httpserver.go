@@ -23,9 +23,9 @@ func FetchHandler(db *sql.DB) echo.HandlerFunc {
 			limit = 10
 		}
 
-		cursorStr := c.QueryParam("offset")
-		cursor, err := strconv.Atoi(cursorStr)
-		if err != nil && cursorStr != "" {
+		offsetStr := c.QueryParam("offset")
+		offset, err := strconv.Atoi(offsetStr)
+		if err != nil && offsetStr != "" {
 			return c.JSON(http.StatusBadRequest, map[string]interface{}{
 				"code":    "BAD_REQUEST_PARAMS",
 				"message": "offset parameter is invalid, should be positive integer",
@@ -34,15 +34,15 @@ func FetchHandler(db *sql.DB) echo.HandlerFunc {
 
 		fetchParam := FetchParam{
 			Limit:  uint64(limit),
-			OffSet: uint64(cursor),
+			OffSet: uint64(offset),
 		}
 
-		res, nextCursor, err := FetchPayment(c.Request().Context(), db, fetchParam)
+		res, nextOffset, err := FetchPayment(c.Request().Context(), db, fetchParam)
 		if err != nil {
 			return err
 		}
 
-		c.Response().Header().Add("X-Cursor", fmt.Sprintf("%d", nextCursor))
+		c.Response().Header().Add("X-Offset", fmt.Sprintf("%d", nextOffset))
 		return c.JSON(http.StatusOK, res)
 	}
 }

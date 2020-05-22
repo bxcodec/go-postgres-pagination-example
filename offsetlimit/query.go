@@ -13,7 +13,7 @@ type FetchParam struct {
 	OffSet uint64
 }
 
-func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pagination.Payment, nextCursor int64, err error) {
+func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pagination.Payment, nextOffset int64, err error) {
 	queryBuilder := sq.Select("id", "amount", "name", "created_time").From("payment").PlaceholderFormat(sq.Dollar).OrderBy("id DESC")
 
 	if params.Limit > 0 {
@@ -49,7 +49,7 @@ func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pag
 	}
 
 	if len(res) > 0 {
-		nextCursor = int64(params.OffSet + params.Limit)
+		nextOffset = int64(params.OffSet + params.Limit)
 	}
 
 	return
