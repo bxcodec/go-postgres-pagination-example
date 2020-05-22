@@ -8,7 +8,6 @@ RUN apt --yes --force-yes update && apt --yes --force-yes upgrade && \
 WORKDIR /go_modules/auto-increment-id
 
 COPY . .
-COPY ../ ../
 RUN make engine
 
 ## Distribution
