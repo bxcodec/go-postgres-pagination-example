@@ -2,7 +2,7 @@ package main
 
 import (
 	pagination "github.com/bxcodec/go-postgres-pagination-example"
-	"github.com/bxcodec/postgres-pagination/autoincrementid"
+	"github.com/bxcodec/go-postgres-pagination-example/autoincrementid"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )

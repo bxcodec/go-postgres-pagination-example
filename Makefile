@@ -4,5 +4,5 @@ run:
 benchmark:
 	go test --bench=. --benchmem  -v .
 
-engine:
-	go build -o engine ./main/main.go
+auto-increment:
+	go build -o aiengine ./autoincrementid/main/main.go

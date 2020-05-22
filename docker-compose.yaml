@@ -7,29 +7,33 @@ networks:
     driver: bridge
 
 services:
-  api:
+  auto-increment:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./autoincrementid/Dockerfile
     container_name: payment-with-auto-increment-id
     ports:
-      - 9090:9090
+      # open:internal
+      - 9091:9090
     environment: 
-      POSTGRES_HOST: postgres
-      POSTGRES_PORT: user
+      POSTGRES_HOST: postgres-auto-increment
+      POSTGRES_PORT: 5432
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DATABASE: payment
       DB_MAX_CONN_LIFE_TIME_S: 300
       DB_MAX_OPEN_CONNECTION: 100
       DB_MAX_IDLE_CONNECTION: 10
-  postgres:
+    networks: 
+      - backend
+    depends_on:
+      postgres-auto-increment:
+        condition: service_healthy
+  postgres-auto-increment:
     build:
-      context: .
+      context: ./autoincrementid
       dockerfile: db.Dockerfile
     container_name: payment-with-auto-increment-id-db
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_DB: payment
       POSTGRES_USER: user
