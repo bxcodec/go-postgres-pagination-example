@@ -51,7 +51,6 @@ func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pag
 	}
 
 	if params.Cursor != "" {
-		// fmt.Println("KLAO DISINI >???? MAKSUD ADANDA")
 		createdCursor, paymentID, errCsr := decodeCursor(params.Cursor)
 		if errCsr != nil {
 			err = errors.New("invalid-cursor")
