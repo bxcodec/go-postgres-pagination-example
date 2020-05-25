@@ -42,7 +42,7 @@ func FetchHandler(db *sql.DB) echo.HandlerFunc {
 			return err
 		}
 
-		c.Response().Header().Add("X-Cursor", fmt.Sprintf("%d", nextCursor))
+		c.Response().Header().Add("X-NextCursor", fmt.Sprintf("%d", nextCursor))
 		return c.JSON(http.StatusOK, res)
 	}
 }

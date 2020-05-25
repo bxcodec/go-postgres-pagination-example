@@ -15,3 +15,7 @@ offset-limit:
 .PHONY: uuid-created-time
 uuid-created-time:
 	go build -o ucengine ./uuidcreatedtime/main/main.go
+
+.PHONY: page-number
+page-number:
+	go build -o pnengine ./pagenumber/main/main.go

@@ -132,3 +132,45 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  # =================
+  # Page Number
+  # =================
+  page-number:
+    build:
+      context: .
+      dockerfile: ./pagenumber/Dockerfile
+    container_name: payment-with-page-number
+    ports:
+      - 9094:9090
+    environment: 
+      POSTGRES_HOST: postgres-page-number
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: payment
+      DB_MAX_CONN_LIFE_TIME_S: 300
+      DB_MAX_OPEN_CONNECTION: 100
+      DB_MAX_IDLE_CONNECTION: 10
+    networks: 
+      - backend
+    depends_on:
+      postgres-page-number:
+        condition: service_healthy
+
+  postgres-page-number:
+    build:
+      context: ./pagenumber
+      dockerfile: db.Dockerfile
+    container_name: payment-with-page-number-db
+    environment:
+      POSTGRES_DB: payment
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d payment"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

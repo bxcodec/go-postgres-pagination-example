@@ -34,6 +34,7 @@ func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pag
 		return
 	}
 
+	res = []pagination.Payment{}
 	for rows.Next() {
 		var item pagination.Payment
 		err = rows.Scan(

@@ -42,7 +42,7 @@ func FetchHandler(db *sql.DB) echo.HandlerFunc {
 			return err
 		}
 
-		c.Response().Header().Add("X-Offset", fmt.Sprintf("%d", nextOffset))
+		c.Response().Header().Add("X-NextOffset", fmt.Sprintf("%d", nextOffset))
 		return c.JSON(http.StatusOK, res)
 	}
 }
