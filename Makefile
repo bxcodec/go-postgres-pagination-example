@@ -14,4 +14,4 @@ offset-limit:
 
 .PHONY: uuid-created-time
 uuid-created-time:
-	go build -o ucengine ./offsetlimit/main/main.go
+	go build -o ucengine ./uuidcreatedtime/main/main.go

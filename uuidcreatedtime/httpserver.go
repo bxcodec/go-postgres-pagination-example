@@ -29,7 +29,10 @@ func FetchHandler(db *sql.DB) echo.HandlerFunc {
 
 		res, nextCursor, err := FetchPayment(c.Request().Context(), db, fetchParam)
 		if err != nil {
-			return err
+			return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+				"code":    "INTERNAL_SERVER_ERROR",
+				"message": err.Error(),
+			})
 		}
 
 		c.Response().Header().Add("X-Cursor", nextCursor)

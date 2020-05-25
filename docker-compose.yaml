@@ -100,7 +100,7 @@ services:
       dockerfile: ./uuidcreatedtime/Dockerfile
     container_name: payment-with-uuid-created-time
     ports:
-      - 9092:9090
+      - 9093:9090
     environment: 
       POSTGRES_HOST: postgres-uuid-created-time
       POSTGRES_PORT: 5432
