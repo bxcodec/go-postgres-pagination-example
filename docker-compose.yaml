@@ -7,6 +7,9 @@ networks:
     driver: bridge
 
 services:
+  # =================
+  # Auto increment
+  # =================
   auto-increment:
     build:
       context: .
@@ -45,7 +48,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+  
+  # =================
+  # Offset Limit
+  # =================
   offset-limit:
     build:
       context: .
@@ -81,6 +87,48 @@ services:
       - backend
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U user -d payment"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # =================
+  # UUID Created Time
+  # =================
+  uuid-created-time:
+    build:
+      context: .
+      dockerfile: ./uuidcreatedtime/Dockerfile
+    container_name: payment-with-uuid-created-time
+    ports:
+      - 9093:9090
+    environment: 
+      POSTGRES_HOST: postgres-uuid-created-time
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DATABASE: payment_with_uuid
+      DB_MAX_CONN_LIFE_TIME_S: 300
+      DB_MAX_OPEN_CONNECTION: 100
+      DB_MAX_IDLE_CONNECTION: 10
+    networks: 
+      - backend
+    depends_on:
+      postgres-uuid-created-time:
+        condition: service_healthy
+
+  postgres-uuid-created-time:
+    build:
+      context: ./uuidcreatedtime
+      dockerfile: db.Dockerfile
+    container_name: payment-with-uuid-created-time-db
+    environment:
+      POSTGRES_DB: payment_with_uuid
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d payment_with_uuid"]
       interval: 10s
       timeout: 5s
       retries: 5

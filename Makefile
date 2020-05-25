@@ -11,3 +11,7 @@ auto-increment:
 .PHONY: offset-limit
 offset-limit:
 	go build -o olengine ./offsetlimit/main/main.go
+
+.PHONY: uuid-created-time
+uuid-created-time:
+	go build -o ucengine ./uuidcreatedtime/main/main.go
