@@ -74,6 +74,7 @@ func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pag
 		return
 	}
 
+	res = []pagination.Payment{}
 	var createdTime time.Time // only using one for all loops, we only need the latest one in the end
 	for rows.Next() {
 		var item pagination.Payment
