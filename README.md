@@ -2,7 +2,7 @@
 An example project for pagination in Postgres with Golang 
 
 
-This repostiory based on this article TODO* (bxcodec)
+This repostiory based on this article https://medium.com/easyread/how-to-do-pagination-in-postgres-with-golang-in-4-common-ways-12365b9fb528
 
 ### Pagination List 
  
