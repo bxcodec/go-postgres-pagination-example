@@ -57,3 +57,8 @@ Example,
 $ cd pagenumber
 $ make benchmark
 ```
+
+### Benchmark Result
+
+![Benchmark Result](./benchmark.png)
+
