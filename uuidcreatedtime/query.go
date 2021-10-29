@@ -44,7 +44,7 @@ func encodeCursor(t time.Time, uuid string) string {
 }
 
 func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pagination.Payment, nextCursor string, err error) {
-	queryBuilder := sq.Select("id", "amount", "name", "created_time").From("payment_with_uuid").PlaceholderFormat(sq.Dollar).OrderBy("created_time DESC, id DESC")
+	queryBuilder := sq.Select("id", "amount", "name", "created_time").From("payment_with_uuid").PlaceholderFormat(sq.Dollar).OrderBy("created_time DESC")
 
 	if params.Limit > 0 {
 		queryBuilder = queryBuilder.Limit(params.Limit)
@@ -59,7 +59,7 @@ func FetchPayment(ctx context.Context, db *sql.DB, params FetchParam) (res []pag
 		queryBuilder = queryBuilder.Where(sq.LtOrEq{
 			"created_time": createdCursor,
 		})
-		queryBuilder = queryBuilder.Where(sq.Lt{
+		queryBuilder = queryBuilder.Where(sq.NotEq{
 			"id": paymentID,
 		})
 	}
